@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
                 <Navigation />
                 <br/> <div className="bg-dark container text-white py-5">
                     { children }
-                </div> 
+                </div>
             </body>
         </html>
     )
