@@ -1,19 +1,22 @@
 import Link from "next/link"
 
 async function getUser (id) {
-    const resp = await fetch(`https://rickandmortyapi.com/api/character/${id}`)
+    const resp = await fetch(`https://reqres.in/api/users/${id}`)
     const data = await resp.json()
-    return data
+    return data.data
 }
 
 export default async function UserId ({params}) {
 
     const resp = await getUser(params.userId)
+    
     return <>
         <div className="text-center">
-            <h2 className="card-header py-2 text-center">{resp.name}</h2>
-            <img src={resp.image}></img><br/><br/>
-            <buttton className="btn btn-warning"><Link className="nav-link" href={'/users'}>Regresar</Link></buttton>
+            <h2 className="card-header py-2 text-center">{resp.email}</h2>
+            <img src={resp.avatar}></img><br/><br/>
+            <buttton className="btn btn-info">
+                <Link className="nav-link" href={'/users'}>Regresar</Link>
+            </buttton>
         </div>
     </>
 }

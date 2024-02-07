@@ -23,7 +23,6 @@ export default function IndexPage () {
 
                         const data = await resp.json()
                         alert(data.msg)
-                        console.log(process.env.APIKEY)
                     }}>
                         <div className="form-group">
                             <input type="file" className="form-control"

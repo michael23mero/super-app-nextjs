@@ -13,10 +13,10 @@ export async function GET() {
 export async function POST(request) {
     try {
         const data = await request.json()
-        const post = await prisma.collectionpost.create({
+        await prisma.collectionpost.create({
             data: data
         })
-        return response.json(post)
+        return response.json({msg: 'Post added successfully'})
     } catch (err) {
         return response.json({msg: err.message})
     }
