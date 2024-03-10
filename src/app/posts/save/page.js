@@ -9,6 +9,7 @@ export default function PostSave ({params}) {
 
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
+    const [image, setImage] = useState()
 
     useEffect(() => {
         if(params.postId){
@@ -23,15 +24,20 @@ export default function PostSave ({params}) {
     const onSubmit = async (e) => {
         e.preventDefault();
         const data = { title, description }
+
+        const form = new FormData();
+        form.set('image', image);
+        form.set('title', title);
+        form.set('description', description);
+
         if(params.postId){
             await fetch(`/api/post/${params.postId}`,{
                 method: 'PUT', body: JSON.stringify(data),
                 headers: { 'Content-Type': 'application/json' }
             });
         }else{
-            await fetch('/api/post',{
-                method: 'POST', body: JSON.stringify(data),
-                headers: { 'Content-Type': 'application/json' }
+            const response = await fetch('/api/post',{
+                method: 'POST', body: form
             });
         }
         route.push('/posts')
@@ -47,6 +53,14 @@ export default function PostSave ({params}) {
                 <input type="text" className="form-control" placeholder="Enter description" name="description"
                     onChange={(e) => setDescription(e.target.value)} value={description}/>
             </div>
+            <div className="form-group">
+                <input type="file" className="form-control"
+                    onChange={(e) => {
+                        setImage(e.target.files[0])
+                    }}
+                />
+            </div>
+            { image && <img src={URL.createObjectURL(image)} className="mx-auto w-50 py-3"/> } <br/>
             <div className="text-center">
                 <button className="btn btn btn-primary" type="submit">Save</button>
                 {

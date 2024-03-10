@@ -14,6 +14,9 @@ export default function PostCard ({data}) {
         >
             <h5>{data.title}</h5>
             <h6>{data.description}</h6>
+            <div className="text-center">
+                <img src={data.image} style={{ width: "100px", borderRadius: "50%"}}/>
+            </div>
         </div>
     </>
 }
