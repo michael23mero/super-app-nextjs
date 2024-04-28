@@ -4,17 +4,18 @@ import { useRouter } from "next/navigation"
 
 export default function PostCard ({data}) {
 
-    const route = useRouter()
+    const router = useRouter()
     
     return <>
-        <div className="card p-4 text-center text-white"
+        <div className="card p-4 text-center"
             key={data.id}
-            onClick={() => route.push('/posts/save/' + data.id) }
+            onClick={() => router.push('/posts/save/' + data.id) }
             style={{cursor: 'pointer'}}
         >
-            <h5>{data.title}</h5>
-            <h6>{data.description}</h6>
-            <div className="text-center">
+            <h5 className="card-header py-2">{data.title}</h5>
+            
+            <div className="mt-2 text-center">
+                <h6>{data.description}</h6>
                 <img src={data.image} style={{ width: "100px", borderRadius: "50%"}}/>
             </div>
         </div>

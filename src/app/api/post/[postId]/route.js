@@ -1,4 +1,4 @@
-import { prisma } from "@/config/prisma";
+import { prisma } from "@/res/config/prisma";
 import { NextResponse as response } from "next/server";
 
 export async function GET (request, {params}) {
@@ -23,7 +23,6 @@ export async function PUT (request, {params}) {
             }, data: data
         })
         return response.json({msg: 'Post updated successfully'})
-
     } catch (err) {
         return response.json({msg: err.message})
     }
@@ -31,7 +30,7 @@ export async function PUT (request, {params}) {
 
 export async function DELETE (request, {params}) {
     try {
-        await prisma.collectionpost.delete({
+        const post = await prisma.collectionpost.delete({
             where: {
                 id: params.postId
             }

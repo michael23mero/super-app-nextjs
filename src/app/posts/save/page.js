@@ -40,7 +40,7 @@ export default function PostSave ({params}) {
                 method: 'POST', body: form
             });
         }
-        route.push('/posts')
+        route.refresh(); route.push('/posts')
     }
 
     return <div className="col-md-5 mx-auto">
@@ -69,8 +69,8 @@ export default function PostSave ({params}) {
                             onClick={async () =>{
                                 await fetch(`/api/post/${params.postId}`, {
                                     method: 'DELETE'
-                                }); //route.refresh()
-                                route.push('/posts')
+                                });
+                                route.refresh(); route.push('/posts')
                             }}>Remove
                         </button>
                     )

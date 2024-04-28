@@ -1,8 +1,8 @@
 import Link from "next/link"
-import PostCard from "@/components/PostCard";
+import PostCard from "@/res/components/PostCard";
 
 async function loadPosts () {
-    const resp = await fetch('http://localhost:3000/api/post', { cache: "no-store" })
+    const resp = await fetch(`${process.env.API_URL}/post`, { cache: "no-store" })
     const data = await resp.json()
     return data
 }

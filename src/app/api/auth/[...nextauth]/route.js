@@ -1,9 +1,10 @@
-import { connection } from "@/config/mongodb";
-import User from "@/models/user";
-import { compare } from "bcryptjs";
+import { prisma } from "@/res/config/prisma";
 
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+import bcrypt from "bcrypt";
+import { cookies } from "next/headers";
 
 const handler = NextAuth({
 
@@ -19,15 +20,17 @@ const handler = NextAuth({
                 }
             },
             async authorize(credentials, req) {
-                await connection()
-                
-                const userFound = await User.findOne({ email: credentials.email }).select('+password')
-                if(!userFound) throw new Error('Invalid credentials')
 
-                const passwordMatch = await compare(credentials.password, userFound.password)
-                if(!passwordMatch) throw new Error('Invalid credentials')
+                const user = await prisma.collectionuser.findFirst({
+                    where: { email: credentials.email }
+                })
 
-                return userFound
+                if(!user) throw new Error('Invalid credentials')
+
+                const compare = await bcrypt.compare(credentials.password, user.password)
+                if(!compare) throw new Error('Invalid credentials')
+
+                return  user
             }
         })
     ],
@@ -37,9 +40,13 @@ const handler = NextAuth({
             return token
         },
         session({ session, token }) {
+            const accessToken = cookies().get('next-auth.session-token').value
             session.user = token.user
+            session.token = accessToken
             return session
         }
+
+        
     },
     pages: {
         signIn: "/login"

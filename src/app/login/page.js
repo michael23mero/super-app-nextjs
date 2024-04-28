@@ -27,10 +27,18 @@ export default function Login () {
             <div className="card p-4">
                 <form onSubmit={ handleSubmit }>
                     <div className="form-group mb-2">
-                        <input name="email" className="form-control" placeholder="Enter email" type="email"/>
+                        <input
+                            name="email"
+                            className="form-control"
+                            placeholder="Enter email"
+                            type="email"/>
                     </div>
                     <div className="form-group mb-4">
-                        <input name="password" className="form-control" placeholder="Enter password" type="password"/>
+                        <input
+                            name="password"
+                            className="form-control"
+                            placeholder="Enter password"
+                            type="password"/>
                     </div>
                     <div className="text-center">
                         <button className="btn btn-primary">Login</button>

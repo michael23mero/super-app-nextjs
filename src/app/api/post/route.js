@@ -1,12 +1,7 @@
-import { prisma } from "@/config/prisma";
+import { prisma } from "@/res/config/prisma";
 import { NextResponse as response } from "next/server";
 
-import { initializeApp } from "firebase/app";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-
-import { firebaseConfig } from '@/config/firebase';
-
-initializeApp(firebaseConfig); const storage = getStorage()
+import { supabaseClient } from "@/res/config/supabase";
 
 export async function GET() {
     try {
@@ -24,19 +19,17 @@ export async function POST(request) {
         const file = data.get('image')
         const bytes = await file.arrayBuffer()
 
-        const storageRef = ref(storage, `archivos-next/${Date.now()}`)
-        const metadata = { contentType: file.type };
-        const snapshot = await uploadBytes(storageRef, Buffer.from(bytes), metadata)
-        const url_public = await getDownloadURL(snapshot.ref)
+        const upload = await supabaseClient.storage.from('react-file').upload('file'+Date.now(), Buffer.from(bytes))
+        const urlimg = 'https://ehjwfhdshwjdzhwezdsj.supabase.co/storage/v1/object/public/'+upload.data.fullPath
 
-        await prisma.collectionpost.create({
+        const post = await prisma.collectionpost.create({
             data: {
                 title: data.get('title'), 
                 description: data.get('description'),
-                image: url_public
+                image: urlimg
             }
         })
-        return response.json({msg: 'Post added successfully'})
+        return response.json({msg: 'Post added successfully', post})
     } catch (err) {
         return response.json({msg: err.message})
     }
